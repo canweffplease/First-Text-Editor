@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // function that will remove the placeholder text after person clicks
     editor.addEventListener('focus', () => {
         if (editor.innerText === "Start typing here...") {
-            console.log('test');
             editor.innerText = '';
         }
     });
@@ -14,5 +13,29 @@ document.addEventListener('DOMContentLoaded', () => {
         if (editor.innerText === '') {
             editor.innerText = "Start typing here...";
         }
+    });
+
+    document.getElementById('file-input').addEventListener('change', (event) => {
+        const file = event.target.files[0]; // reads in the first selected file
+
+        if(!file) { // runs if no file selected
+            alert('No file selected!');
+            return;
+        }
+
+        const reader = new FileReader(); // initialize file reader
+        reader.onload = (loadEvent) => { // on load of the reader
+            const content = loadEvent.target.result; // variable to store content of loaded file
+            const lines = content.replace(/\r\n?/g, '\n').split('\n');
+            const formattedLines = lines.map((line) => {
+                const htmlLine = line.replace(/ {4}/g, '<span class="tab"></span>');
+                return htmlLine;
+            });
+            const editor = document.getElementById('text-editor'); // selects editor
+            editor.innerHTML = formattedLines.join('<br>'); // changes text to content of loaded file
+            console.log(editor.innerHTML);
+        };
+
+        reader.readAsText(file);
     });
 });

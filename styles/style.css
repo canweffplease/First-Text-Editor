@@ -14,3 +14,9 @@ button {
     color: #333;
     overflow-y: auto;
 }
+
+.tab {
+    display: inline-block;
+    width: 40px;
+    background-color: pink;
+}
